@@ -14,15 +14,14 @@ export const useEnterSubmit = ({ onChange, option }: UseEnterSubmit) => {
 
 		if (!optionHtml) return;
 
-		const handleEnterKeyDown = (event: KeyboardEvent) => {
-			if (document.activeElement === optionHtml && event.key === 'Enter') {
+		const handleEnterKeyDown = (evt: KeyboardEvent) => {
+			if (document.activeElement === optionHtml && evt.key === 'Enter') {
 				onChange?.(option);
 			}
 		};
 
 		optionHtml.addEventListener('keydown', handleEnterKeyDown);
 
-		// не забываем удалять листенеры, при размонтировании компонента
 		return () => {
 			optionHtml.removeEventListener('keydown', handleEnterKeyDown);
 		};
