@@ -14,7 +14,7 @@ import {
 	fontColors,
 	contentWidthArr,
 } from 'src/constants/articleProps';
-
+import { Space } from 'components/space/Space';
 import styles from './ArticleParamsForm.module.scss';
 import { useState, SyntheticEvent } from 'react';
 
@@ -60,7 +60,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 						<Text size={31} weight={800} uppercase={true}>
 							Задайте параметры
 						</Text>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<Select
 							title={'Шрифт'}
 							options={fontFamilyOptions}
@@ -72,7 +72,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								}))
 							}
 						/>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<RadioGroup
 							title={'Размер шрифта'}
 							options={fontSizeOptions}
@@ -85,7 +85,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 							}
 							name={'fontSize'}
 						/>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<Select
 							title={'Цвет шрифта'}
 							options={fontColors}
@@ -97,9 +97,9 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								}))
 							}
 						/>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<Separator />
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<Select
 							title={'Цвет фона'}
 							options={backgroundColors}
@@ -111,7 +111,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								}))
 							}
 						/>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<Select
 							title={'Ширина контента'}
 							options={contentWidthArr}
@@ -123,7 +123,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								}))
 							}
 						/>
-						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Space />
 						<div className={styles.bottomContainer}>
 							<Button title={'Сбросить'} type='button' onClick={resetButton} />
 							<Button title={'Применить'} type='submit' />
