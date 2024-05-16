@@ -5,7 +5,6 @@ import { Text } from 'components/text';
 import { RadioGroup } from 'components/radio-group';
 import { Select } from 'components/select';
 import { Separator } from 'components/separator';
-
 import {
 	ArticleStateType,
 	defaultArticleState,
@@ -26,7 +25,8 @@ interface IArticleParamsFormProps {
 
 export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 	const [openSideBar, setOpenSideBar] = useState(false);
-	const [sideBarState, setSideBarState] = useState(defaultArticleState);
+	const [sideBarState, setSideBarState] =
+		useState<ArticleStateType>(defaultArticleState);
 	const {
 		fontFamilyOption,
 		fontSizeOption,
@@ -39,9 +39,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 		event.preventDefault();
 		props.setArticleState(sideBarState);
 	};
-	const resetButton = () => {
-		setSideBarState(defaultArticleState);
-	};
+	const resetButton = () => setSideBarState(defaultArticleState);
 	// const toggleSidebar = () => {
 	// 	setOpenSideBar(!openSideBar);
 	// };
@@ -75,8 +73,6 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 							}
 						/>
 						<div className={clsx([styles.space, styles['space_50']])}></div>
-						<Separator />
-						<div className={clsx([styles.space, styles['space_50']])}></div>
 						<RadioGroup
 							title={'Размер шрифта'}
 							options={fontSizeOptions}
@@ -87,7 +83,7 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 									fontSizeOption: option,
 								}))
 							}
-							name={''}
+							name={'fontSize'}
 						/>
 						<div className={clsx([styles.space, styles['space_50']])}></div>
 						<Select
@@ -101,6 +97,8 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								}))
 							}
 						/>
+						<div className={clsx([styles.space, styles['space_50']])}></div>
+						<Separator />
 						<div className={clsx([styles.space, styles['space_50']])}></div>
 						<Select
 							title={'Цвет фона'}
@@ -127,8 +125,8 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 						/>
 						<div className={clsx([styles.space, styles['space_50']])}></div>
 						<div className={styles.bottomContainer}>
-							<Button title='Сбросить' type='button' onClick={resetButton} />
-							<Button title='Применить' type='submit' />
+							<Button title={'Сбросить'} type='button' onClick={resetButton} />
+							<Button title={'Применить'} type='submit' />
 						</div>
 					</form>
 				</aside>
