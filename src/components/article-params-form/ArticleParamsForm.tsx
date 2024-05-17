@@ -13,10 +13,11 @@ import {
 	backgroundColors,
 	fontColors,
 	contentWidthArr,
+	OptionType,
 } from 'src/constants/articleProps';
-import { Space } from 'components/space/Space';
 import styles from './ArticleParamsForm.module.scss';
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, useRef } from 'react';
+import { useClose } from 'src/hooks/useClose';
 
 interface IArticleParamsFormProps {
 	articleState: ArticleStateType;
@@ -24,7 +25,7 @@ interface IArticleParamsFormProps {
 }
 
 export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
-	const [openSideBar, setOpenSideBar] = useState(false);
+	const [isOpenSideBar, setIsOpenSideBar] = useState<boolean>(false);
 	const [sideBarState, setSideBarState] =
 		useState<ArticleStateType>(defaultArticleState);
 	const {
@@ -35,102 +36,89 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 		contentWidth,
 	} = sideBarState;
 
-	const buttonSendForm = (event: SyntheticEvent) => {
+	const onButtonSendForm = (event: SyntheticEvent) => {
 		event.preventDefault();
 		props.setArticleState(sideBarState);
 	};
-	const resetButton = () => setSideBarState(defaultArticleState);
-	// const toggleSidebar = () => {
-	// 	setOpenSideBar(!openSideBar);
-	// };
+	const onResetButton = () => {
+		setSideBarState(defaultArticleState);
+		props.setArticleState(defaultArticleState);
+	};
 
-	const containerClass = clsx(styles.container, {
-		[styles.container_open]: openSideBar,
+	const formRef = useRef<HTMLDivElement | null>(null);
+	useClose({
+		isOpenSideBar,
+		setCloseSideBar: () => setIsOpenSideBar(false),
+		formRef,
 	});
+
+	const handleChangedOptions =
+		(option: keyof ArticleStateType) => (select: OptionType) => {
+			setSideBarState({
+				...sideBarState,
+				[option]: select,
+			});
+		};
 
 	return (
 		<>
-			<ArrowButton
-				onClick={() => setOpenSideBar(!openSideBar)}
-				openSideBar={openSideBar}
-			/>
-			{openSideBar && (
-				<aside className={containerClass}>
-					<form onSubmit={buttonSendForm} className={styles.form}>
+			<div ref={formRef}>
+				<ArrowButton
+					onClick={() => setIsOpenSideBar(!isOpenSideBar)}
+					isOpenSideBar={isOpenSideBar}
+				/>
+				<aside
+					className={clsx(
+						styles.container,
+						isOpenSideBar && styles.container_open
+					)}>
+					<form onSubmit={onButtonSendForm} className={styles.form}>
 						<Text size={31} weight={800} uppercase={true}>
 							Задайте параметры
 						</Text>
-						<Space />
 						<Select
 							title={'Шрифт'}
 							options={fontFamilyOptions}
 							selected={fontFamilyOption}
-							onChange={(option) =>
-								setSideBarState((state) => ({
-									...state,
-									fontFamilyOption: option,
-								}))
-							}
+							onChange={handleChangedOptions('fontFamilyOption')}
 						/>
-						<Space />
 						<RadioGroup
 							title={'Размер шрифта'}
 							options={fontSizeOptions}
 							selected={fontSizeOption}
-							onChange={(option) =>
-								setSideBarState((state) => ({
-									...state,
-									fontSizeOption: option,
-								}))
-							}
+							onChange={handleChangedOptions('fontSizeOption')}
 							name={'fontSize'}
 						/>
-						<Space />
 						<Select
 							title={'Цвет шрифта'}
 							options={fontColors}
 							selected={fontColor}
-							onChange={(option) =>
-								setSideBarState((state) => ({
-									...state,
-									fontColor: option,
-								}))
-							}
+							onChange={handleChangedOptions('fontColor')}
 						/>
-						<Space />
 						<Separator />
-						<Space />
 						<Select
 							title={'Цвет фона'}
 							options={backgroundColors}
 							selected={backgroundColor}
-							onChange={(option) =>
-								setSideBarState((state) => ({
-									...state,
-									backgroundColor: option,
-								}))
-							}
+							onChange={handleChangedOptions('backgroundColor')}
 						/>
-						<Space />
 						<Select
 							title={'Ширина контента'}
 							options={contentWidthArr}
 							selected={contentWidth}
-							onChange={(option) =>
-								setSideBarState((state) => ({
-									...state,
-									contentWidth: option,
-								}))
-							}
+							onChange={handleChangedOptions('contentWidth')}
 						/>
-						<Space />
-						<div className={styles.bottomContainer}>
-							<Button title={'Сбросить'} type='button' onClick={resetButton} />
+						<div className={clsx(styles.bottomContainer)}>
+							<Button
+								title={'Сбросить'}
+								type='button'
+								onClick={onResetButton}
+							/>
 							<Button title={'Применить'} type='submit' />
 						</div>
 					</form>
 				</aside>
-			)}
+			</div>
 		</>
 	);
 };

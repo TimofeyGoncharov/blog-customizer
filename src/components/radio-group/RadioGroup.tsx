@@ -3,6 +3,7 @@ import { Text } from 'components/text';
 import { Option } from './Option';
 
 import styles from './RadioGroup.module.scss';
+import clsx from 'clsx';
 
 type RadioGroupProps = {
 	name: string;
@@ -18,7 +19,7 @@ export const RadioGroup = (props: RadioGroupProps) => {
 	const handleChange = (option: OptionType) => onChange?.(option);
 
 	return (
-		<div className={styles.container}>
+		<div className={clsx(styles.container)}>
 			{title && (
 				<>
 					<Text weight={800} size={12} uppercase>
@@ -26,7 +27,7 @@ export const RadioGroup = (props: RadioGroupProps) => {
 					</Text>
 				</>
 			)}
-			<div className={styles.group}>
+			<div className={clsx(styles.group)}>
 				{options.map((option) => (
 					<Option
 						key={option.value}

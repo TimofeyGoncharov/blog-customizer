@@ -17,7 +17,7 @@ export const ArrowButtonStory: Story = {
 					onClick={() => {
 						console.log('this is story');
 					}}
-					openSideBar={true}
+					isOpenSideBar={true}
 				/>
 			</>
 		);
