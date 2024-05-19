@@ -26,23 +26,25 @@ interface IArticleParamsFormProps {
 
 export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 	const [isOpenSideBar, setIsOpenSideBar] = useState<boolean>(false);
-	const [sideBarState, setSideBarState] =
-		useState<ArticleStateType>(defaultArticleState);
-	const {
-		fontFamilyOption,
-		fontSizeOption,
-		fontColor,
-		backgroundColor,
-		contentWidth,
-	} = sideBarState;
 
 	const onButtonSendForm = (event: SyntheticEvent) => {
 		event.preventDefault();
-		props.setArticleState(sideBarState);
+		props.setArticleState({
+			...props.articleState,
+			backgroundColor: selectBackgroundColorOption,
+			contentWidth: selectContentWidthOption,
+			fontColor: selectFontColorOption,
+			fontSizeOption: ragioGroupFontSizeOption,
+			fontFamilyOption: selectFamilyOption,
+		});
 	};
 	const onResetButton = () => {
-		setSideBarState(defaultArticleState);
 		props.setArticleState(defaultArticleState);
+		setSelectContentWidthOption(defaultArticleState.contentWidth);
+		setSelectBackgroundColorOption(defaultArticleState.backgroundColor);
+		setSelectFontColorOption(defaultArticleState.fontColor);
+		setGagioGroupFontSizeOption(defaultArticleState.fontSizeOption);
+		setSelectFamilyOption(defaultArticleState.fontFamilyOption);
 	};
 
 	const formRef = useRef<HTMLDivElement | null>(null);
@@ -52,13 +54,21 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 		formRef,
 	});
 
-	const handleChangedOptions =
-		(option: keyof ArticleStateType) => (select: OptionType) => {
-			setSideBarState({
-				...sideBarState,
-				[option]: select,
-			});
-		};
+	const [selectFamilyOption, setSelectFamilyOption] = useState<OptionType>(
+		props.articleState.fontFamilyOption
+	);
+
+	const [ragioGroupFontSizeOption, setGagioGroupFontSizeOption] =
+		useState<OptionType>(props.articleState.fontSizeOption);
+
+	const [selectFontColorOption, setSelectFontColorOption] =
+		useState<OptionType>(props.articleState.fontColor);
+
+	const [selectBackgroundColorOption, setSelectBackgroundColorOption] =
+		useState<OptionType>(props.articleState.backgroundColor);
+
+	const [selectContentWidthOption, setSelectContentWidthOption] =
+		useState<OptionType>(props.articleState.contentWidth);
 
 	return (
 		<>
@@ -79,34 +89,34 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 						<Select
 							title={'Шрифт'}
 							options={fontFamilyOptions}
-							selected={fontFamilyOption}
-							onChange={handleChangedOptions('fontFamilyOption')}
+							selected={selectFamilyOption}
+							onChange={setSelectFamilyOption}
 						/>
 						<RadioGroup
 							title={'Размер шрифта'}
 							options={fontSizeOptions}
-							selected={fontSizeOption}
-							onChange={handleChangedOptions('fontSizeOption')}
+							selected={ragioGroupFontSizeOption}
+							onChange={setGagioGroupFontSizeOption}
 							name={'fontSize'}
 						/>
 						<Select
 							title={'Цвет шрифта'}
 							options={fontColors}
-							selected={fontColor}
-							onChange={handleChangedOptions('fontColor')}
+							selected={selectFontColorOption}
+							onChange={setSelectFontColorOption}
 						/>
 						<Separator />
 						<Select
 							title={'Цвет фона'}
 							options={backgroundColors}
-							selected={backgroundColor}
-							onChange={handleChangedOptions('backgroundColor')}
+							selected={selectBackgroundColorOption}
+							onChange={setSelectBackgroundColorOption}
 						/>
 						<Select
 							title={'Ширина контента'}
 							options={contentWidthArr}
-							selected={contentWidth}
-							onChange={handleChangedOptions('contentWidth')}
+							selected={selectContentWidthOption}
+							onChange={setSelectContentWidthOption}
 						/>
 						<div className={clsx(styles.bottomContainer)}>
 							<Button
@@ -114,7 +124,11 @@ export const ArticleParamsForm = (props: IArticleParamsFormProps) => {
 								type='button'
 								onClick={onResetButton}
 							/>
-							<Button title={'Применить'} type='submit' />
+							<Button
+								title={'Применить'}
+								type='submit'
+								onClick={() => console.log(props.articleState)}
+							/>
 						</div>
 					</form>
 				</aside>

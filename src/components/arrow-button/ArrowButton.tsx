@@ -12,9 +12,7 @@ type ArrowButtonProps = {
 	isOpenSideBar: boolean;
 };
 
-export const ArrowButton: React.FC<ArrowButtonProps> = (
-	props: ArrowButtonProps
-) => {
+export const ArrowButton = (props: ArrowButtonProps) => {
 	return (
 		<div
 			role='button'
